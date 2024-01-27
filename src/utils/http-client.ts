@@ -48,13 +48,13 @@ const _delete = <T = any, R = AxiosResponse<T>>(
 };
 
 export const httpClient = {
-  get: <T = unknown, R = AxiosResponse<T>>(
+  get:(
     url: string,
     config?: AxiosRequestConfig
   ) => {
     return _get(url, config);
   },
-  post: <T = any, R = AxiosResponse<T>>(
+  post:(
     url: string,
     data?: any,
     config?: AxiosRequestConfig
@@ -62,14 +62,14 @@ export const httpClient = {
     return _post(url, data, config);
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  put: <T = any, R = AxiosResponse<T>>(
+  put:(
     url: string,
     data?: any,
     config?: AxiosRequestConfig
   ) => {
     return _put(url, data, config);
   },
-  delete: <T = any, R = AxiosResponse<T>>(
+  delete:(
     url: string,
     config?: AxiosRequestConfig
   ) => {
