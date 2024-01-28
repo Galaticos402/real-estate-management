@@ -4,6 +4,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { TOKEN } from "./constants";
 
 const _getConfig = (config?: AxiosRequestConfig) => {
+  console.log(process.env.REACT_APP_SERVER_LINK);
   return {
     ...config,
     baseURL: process.env.REACT_APP_SERVER_LINK,
@@ -48,31 +49,17 @@ const _delete = <T = any, R = AxiosResponse<T>>(
 };
 
 export const httpClient = {
-  get:(
-    url: string,
-    config?: AxiosRequestConfig
-  ) => {
+  get: (url: string, config?: AxiosRequestConfig) => {
     return _get(url, config);
   },
-  post:(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ) => {
+  post: (url: string, data?: any, config?: AxiosRequestConfig) => {
     return _post(url, data, config);
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  put:(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ) => {
+  put: (url: string, data?: any, config?: AxiosRequestConfig) => {
     return _put(url, data, config);
   },
-  delete:(
-    url: string,
-    config?: AxiosRequestConfig
-  ) => {
+  delete: (url: string, config?: AxiosRequestConfig) => {
     return _delete(url, config);
   },
 };

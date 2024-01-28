@@ -5,6 +5,9 @@ import { IconLock, IconMail } from "@tabler/icons-react";
 import * as yup from 'yup'
 import { useFormik } from "formik";
 import { ILoginRequest } from "../../models/auth.model";
+import useAuth from "../../hooks/use-auth";
+import { useNavigate } from "react-router-dom";
+import { ROLE, TOKEN } from "../../utils/constants";
 
 const LoginSchema = yup.object().shape({
   username: yup.string().required(),
@@ -13,8 +16,21 @@ const LoginSchema = yup.object().shape({
 
 const LoginPage: React.FC = () => {
 
+  const {login} = useAuth()
+  const navigate = useNavigate()
   const handleSubmit = () => {
-
+    login(formik.values.username, formik.values.password)
+      .then(res => {
+        if(res){
+          const {role, token} = res
+          localStorage.setItem(TOKEN, token)
+          localStorage.setItem(ROLE, role)
+          navigate('/customer/project')
+        }
+      }).catch(err => {
+        console.warn(err)
+        // navigate('')
+      })
   }
 
   const formik = useFormik<ILoginRequest>({
@@ -39,7 +55,7 @@ const LoginPage: React.FC = () => {
               </div>
               <Input.Label style={{ color: "#B37FEB" }}>Tên đăng nhập</Input.Label>
             </div>
-            <Input value={formik.values.username} radius="sm" placeholder="E.x minhquan4501" />
+            <Input onChange={(e) => formik.setFieldValue('username', e.currentTarget.value)} value={formik.values.username} radius="sm" placeholder="E.x minhquan4501" />
           </Input.Wrapper>
           {/* Password */}
           <Input.Wrapper className={classes.input_wrapper}>
@@ -49,7 +65,7 @@ const LoginPage: React.FC = () => {
               </div>
               <Input.Label style={{ color: "#B37FEB" }}>Mật khẩu</Input.Label>
             </div>
-            <Input value={formik.values.password}  type="password" radius="sm" placeholder="E.x minhquan4501" />
+            <Input onChange={(e) => formik.setFieldValue('password', e.currentTarget.value)} value={formik.values.password}  type="password" radius="sm" placeholder="E.x minhquan4501" />
           </Input.Wrapper>
           <Button
             variant="light"
@@ -57,6 +73,7 @@ const LoginPage: React.FC = () => {
             fullWidth
             mt="md"
             radius="md"
+            onClick={handleSubmit}
           >
             Đăng nhập
           </Button>

@@ -3,5 +3,10 @@ export interface ILoginRequest{
     password: string
 }
 export interface ILoginResponse{
-    token: string
+    token: string,
+    role: ROLE
+}
+
+export enum ROLE{
+    CUSTOMER = "Customer"
 }

@@ -1,8 +1,13 @@
 import { Badge, Button, Card, Group, Image, Text } from "@mantine/core";
 import React from "react";
 import vinhomeImg from "../../../../assets/vinhome.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Project: React.FC = () => {
+  const navigate = useNavigate()
+  const handleViewDetail = () => {
+    navigate('/customer/project/1')
+  }
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
@@ -21,7 +26,7 @@ const Project: React.FC = () => {
         Bình và Long Thạnh Mỹ, TP. Thủ Đức, TP.HCM.
       </Text>
 
-      <Button color="green" fullWidth mt="md" radius="md">
+      <Button color="green" fullWidth mt="md" radius="md" onClick={handleViewDetail}>
         Xem chi tiết
       </Button>
     </Card>
