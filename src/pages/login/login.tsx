@@ -2,8 +2,30 @@ import React from "react";
 import { Button, Card, Input, Text } from "@mantine/core";
 import classes from "./login.module.css";
 import { IconLock, IconMail } from "@tabler/icons-react";
+import * as yup from 'yup'
+import { useFormik } from "formik";
+import { ILoginRequest } from "../../models/auth.model";
+
+const LoginSchema = yup.object().shape({
+  username: yup.string().required(),
+  password: yup.string().required()
+})
 
 const LoginPage: React.FC = () => {
+
+  const handleSubmit = () => {
+
+  }
+
+  const formik = useFormik<ILoginRequest>({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    validationSchema: LoginSchema,
+    onSubmit: handleSubmit,
+  })
+
   return (
     <div className={classes.container}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -15,9 +37,9 @@ const LoginPage: React.FC = () => {
               <div>
                 <IconMail size="0.9em" color="#B37FEB" />
               </div>
-              <Input.Label style={{ color: "#B37FEB" }}>Username</Input.Label>
+              <Input.Label style={{ color: "#B37FEB" }}>Tên đăng nhập</Input.Label>
             </div>
-            <Input radius="sm" placeholder="E.x minhquan4501" />
+            <Input value={formik.values.username} radius="sm" placeholder="E.x minhquan4501" />
           </Input.Wrapper>
           {/* Password */}
           <Input.Wrapper className={classes.input_wrapper}>
@@ -25,9 +47,9 @@ const LoginPage: React.FC = () => {
               <div>
                 <IconLock size="0.9em" color="#B37FEB" />
               </div>
-              <Input.Label style={{ color: "#B37FEB" }}>Password</Input.Label>
+              <Input.Label style={{ color: "#B37FEB" }}>Mật khẩu</Input.Label>
             </div>
-            <Input type="password" radius="sm" placeholder="E.x minhquan4501" />
+            <Input value={formik.values.password}  type="password" radius="sm" placeholder="E.x minhquan4501" />
           </Input.Wrapper>
           <Button
             variant="light"
@@ -36,7 +58,7 @@ const LoginPage: React.FC = () => {
             mt="md"
             radius="md"
           >
-            Log In
+            Đăng nhập
           </Button>
         </div>
       </Card>
