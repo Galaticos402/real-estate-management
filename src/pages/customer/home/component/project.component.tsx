@@ -21,7 +21,7 @@ const Project: React.FC = () => {
         Bình và Long Thạnh Mỹ, TP. Thủ Đức, TP.HCM.
       </Text>
 
-      <Button color="blue" fullWidth mt="md" radius="md">
+      <Button color="green" fullWidth mt="md" radius="md">
         Xem chi tiết
       </Button>
     </Card>

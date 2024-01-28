@@ -16,7 +16,7 @@ const CommonRoute = () => {
         element: <CustomerLayout/>,
         children: [
             {
-                path: '/customer',
+                path: '/customer/project',
                 element: <CustomerHomePage/>
             },
             {
