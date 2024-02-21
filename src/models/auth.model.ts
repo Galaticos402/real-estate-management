@@ -1,5 +1,5 @@
 export interface ILoginRequest{
-    username: string,
+    email: string,
     password: string
 }
 export interface ILoginResponse{

@@ -1,3 +1,4 @@
 export const API_PATH = {
-    LOGIN: '/login'
+    LOGIN: '/Auth',
+    PROJECT: '/Project'
 }

@@ -1,8 +1,11 @@
 import { Card, Text, Image, Group, Badge, Button } from "@mantine/core";
 import React from "react";
 import vinhomeImg from "../../../../assets/vinhome.jpg";
-
-const Division: React.FC = () => {
+import { IDivision } from "../../../../models/division.model";
+interface IProps{
+  division: IDivision
+}
+const Division: React.FC<IProps> = ({division}) => {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
@@ -10,20 +13,16 @@ const Division: React.FC = () => {
       </Card.Section>
 
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500}>PHÂN KHU THE RAINBOW</Text>
-        <Badge color="green">Đã bàn giao</Badge>
-        <Badge color="yellow">VinGroup</Badge>
+        <Text fw={500}>{division.divisionName}</Text>
+        <Badge color="green">{division.divisionStatus}</Badge>
       </Group>
 
       <Text size="sm" c="dimmed" lineClamp={4}>
-        Tên thương mại: Phân khu The Rainbow.– Quy mô: 17 tòa. gồm 10343 căn
-        hộ.– Chiều cao: 25 – 35 tầng.– Diện tích căn hộ: từ 30m2 – 82m2.– Giá
-        bán: từ 30 – 45 triệu/m2.– Thời gian bàn giao: đã bàn giao từ tháng
-        6/2020.
+        {division.description}
       </Text>
 
-      <Button color="green" fullWidth mt="md" radius="md">
-        Đặt chỗ ngay !
+      <Button color="red" fullWidth mt="md" radius="md">
+        Xem các đợt mở bán
       </Button> 
     </Card>
   );

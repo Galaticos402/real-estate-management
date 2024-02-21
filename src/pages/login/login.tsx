@@ -2,60 +2,86 @@ import React from "react";
 import { Button, Card, Input, Text } from "@mantine/core";
 import classes from "./login.module.css";
 import { IconLock, IconMail } from "@tabler/icons-react";
-import * as yup from 'yup'
+import * as yup from "yup";
 import { useFormik } from "formik";
 import { ILoginRequest } from "../../models/auth.model";
 import useAuth from "../../hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import { ROLE, TOKEN } from "../../utils/constants";
+import { ROLE as RoleEnum } from "../../models/auth.model";
+import { decode } from "../../utils/jwt";
 
 const LoginSchema = yup.object().shape({
-  username: yup.string().required(),
-  password: yup.string().required()
-})
+  email: yup.string().required(),
+  password: yup.string().required(),
+});
 
 const LoginPage: React.FC = () => {
-
-  const {login} = useAuth()
-  const navigate = useNavigate()
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const handleSubmit = () => {
-    login(formik.values.username, formik.values.password)
-      .then(res => {
-        if(res){
-          const {role, token} = res
-          localStorage.setItem(TOKEN, token)
-          localStorage.setItem(ROLE, role)
-          navigate('/customer/project')
+    login(formik.values.email, formik.values.password)
+      .then((res) => {
+        if (res) {
+          const { role, token } = res;
+          localStorage.setItem(TOKEN, token);
+          localStorage.setItem(ROLE, role);
+          const decodedUser = decode(token);
+          console.log(decodedUser);
+          switch (decodedUser.role) {
+            case RoleEnum.CUSTOMER:
+              navigate("/customer/project");
+              break;
+          }
         }
-      }).catch(err => {
-        console.warn(err)
-        // navigate('')
       })
-  }
+      .catch((err) => {
+        console.warn(err);
+        // navigate('')
+      });
+  };
 
   const formik = useFormik<ILoginRequest>({
     initialValues: {
-      username: '',
-      password: ''
+      email: "",
+      password: "",
     },
     validationSchema: LoginSchema,
     onSubmit: handleSubmit,
-  })
+  });
 
   return (
     <div className={classes.container}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <div className={classes.cardContent}>
-          <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: '2em', color: '#B37FEB'}}>Đăng nhập</Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "2em",
+              color: "#B37FEB",
+            }}
+          >
+            Đăng nhập
+          </Text>
           {/* Username */}
           <Input.Wrapper className={classes.input_wrapper}>
             <div style={{ display: "flex" }}>
               <div>
                 <IconMail size="0.9em" color="#B37FEB" />
               </div>
-              <Input.Label style={{ color: "#B37FEB" }}>Tên đăng nhập</Input.Label>
+              <Input.Label style={{ color: "#B37FEB" }}>
+                Tên đăng nhập
+              </Input.Label>
             </div>
-            <Input onChange={(e) => formik.setFieldValue('username', e.currentTarget.value)} value={formik.values.username} radius="sm" placeholder="E.x minhquan4501" />
+            <Input
+              onChange={(e) =>
+                formik.setFieldValue("email", e.currentTarget.value)
+              }
+              value={formik.values.email}
+              radius="sm"
+              placeholder="E.x minhquan4501"
+            />
           </Input.Wrapper>
           {/* Password */}
           <Input.Wrapper className={classes.input_wrapper}>
@@ -65,7 +91,15 @@ const LoginPage: React.FC = () => {
               </div>
               <Input.Label style={{ color: "#B37FEB" }}>Mật khẩu</Input.Label>
             </div>
-            <Input onChange={(e) => formik.setFieldValue('password', e.currentTarget.value)} value={formik.values.password}  type="password" radius="sm" placeholder="E.x minhquan4501" />
+            <Input
+              onChange={(e) =>
+                formik.setFieldValue("password", e.currentTarget.value)
+              }
+              value={formik.values.password}
+              type="password"
+              radius="sm"
+              placeholder="E.x minhquan4501"
+            />
           </Input.Wrapper>
           <Button
             variant="light"

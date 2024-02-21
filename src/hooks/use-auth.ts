@@ -18,9 +18,10 @@ export const useAuth = () : UseAuth => {
         }
 
         const request : ILoginRequest = {
-            username: username,
+            email: username,
             password: password
         }
+        console.log(request)
         const response = await httpClient.post(API_PATH.LOGIN, request)
         if(response.status === SUCCESS_STATUS_CODE){
             return response.data as ILoginResponse

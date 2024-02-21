@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./project-detail.module.css";
 import vinhomeImg from "../../../assets/vinhome.jpg";
 import vinhomeImg2 from "../../../assets/vinhome-2.jpg";
@@ -6,8 +6,22 @@ import vinhomeImg3 from "../../../assets/vinhome-3.jpg";
 import { Grid, Image, Table, Text } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import Division from "./component/division";
+import { useParams } from "react-router-dom";
+import useProject from "../../../hooks/use-project";
+import { IProject } from "../../../models/project.model";
+import { AxiosError } from "axios";
 
 const ProjectDetailPage: React.FC = () => {
+  const [project, setProject] = useState<IProject>();
+  const { projectId } = useParams();
+  const { getById } = useProject();
+  useEffect(() => {
+    if (projectId) {
+      getById(projectId)
+        .then((res) => setProject(res))
+        .catch((err: AxiosError) => console.log(err));
+    }
+  }, []);
   return (
     <div className={classes.container}>
       <Grid>
@@ -29,60 +43,50 @@ const ProjectDetailPage: React.FC = () => {
           <Table>
             <Table.Tr>
               <Table.Td>Tên dự án</Table.Td>
-              <Table.Td ta={"end"}>Vinhome Grand Park</Table.Td>
+              <Table.Td ta={"end"}>{project?.projectName}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>Vị trí</Table.Td>
-              <Table.Td ta={"end"}>
-                Nguyễn Xiển – Phường Long Thạnh Mỹ – Quận 9 – TP Hồ Chí Minh
-              </Table.Td>
+              <Table.Td ta={"end"}>{project?.location}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>Chủ đầu tư</Table.Td>
-              <Table.Td ta={"end"}>Tập đoàn Vingroup</Table.Td>
+              <Table.Td ta={"end"}>
+                {project ? project.investor.userName : "-"}
+              </Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>Tổng thầu xây dựng</Table.Td>
-              <Table.Td ta={"end"}>Contecons</Table.Td>
+              <Table.Td ta={"end"}>{project?.buildingContractor}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>Tổng diện tích</Table.Td>
-              <Table.Td ta={"end"}>271 ha</Table.Td>
+              <Table.Td ta={"end"}>{project?.area}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td> Quy mô</Table.Td>
-              <Table.Td ta={"end"}>22 toà tháp cao từ 25 – 30 tầng</Table.Td>
+              <Table.Td ta={"end"}>{project?.scale}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>Pháp lý</Table.Td>
-              <Table.Td ta={"end"}>
-                Sổ hồng sỡ hữu lâu dài | Người nước ngoài 50 năm
-              </Table.Td>
+              <Table.Td ta={"end"}>{project?.juridicalStatus}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>Trang thông tin chi tiết</Table.Td>
               <Table.Td ta={"end"}>
-                <a href="https://vinhome.com.vn/vinhomes-grand-park/">
-                  https://vinhome.com.vn/vinhomes-grand-park/
-                </a>
+                <a href={project?.introPageLink}>{project?.introPageLink}</a>
               </Table.Td>
             </Table.Tr>
           </Table>
         </Grid.Col>
         <Grid.Col span={7}>
           <Grid>
-            <Grid.Col span={6}>
-              <Division />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Division />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Division />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Division />
-            </Grid.Col>
+            {project?.divisions &&
+              project.divisions.map((division) => (
+                <Grid.Col span={6}>
+                  <Division division={division} />
+                </Grid.Col>
+              ))}
           </Grid>
         </Grid.Col>
       </Grid>
