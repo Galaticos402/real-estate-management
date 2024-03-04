@@ -9,7 +9,7 @@ interface IProps{
 const Project: React.FC<IProps> = ({project}) => {
   const navigate = useNavigate()
   const handleViewDetail = () => {
-    navigate('/customer/project/1')
+    navigate(`/customer/project/(${project.projectId})`)
   }
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>

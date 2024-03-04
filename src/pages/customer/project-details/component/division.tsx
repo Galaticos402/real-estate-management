@@ -2,10 +2,15 @@ import { Card, Text, Image, Group, Badge, Button } from "@mantine/core";
 import React from "react";
 import vinhomeImg from "../../../../assets/vinhome.jpg";
 import { IDivision } from "../../../../models/division.model";
+import { useNavigate } from "react-router-dom";
 interface IProps{
   division: IDivision
 }
 const Division: React.FC<IProps> = ({division}) => {
+  const navigate = useNavigate()
+  const handleViewSaleBatch = () => {
+    navigate(`/customer/division/${division.divisionId}`)
+  }
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
@@ -21,7 +26,7 @@ const Division: React.FC<IProps> = ({division}) => {
         {division.description}
       </Text>
 
-      <Button color="red" fullWidth mt="md" radius="md">
+      <Button color="red" fullWidth mt="md" radius="md" onClick={handleViewSaleBatch}>
         Xem các đợt mở bán
       </Button> 
     </Card>

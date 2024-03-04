@@ -17,6 +17,7 @@
 .userInfoShortcut{
     display: flex;
     justify-content: flex-end;
+    align-self: center;
     color: white;
     padding-top: 1.25em;
     /* padding-bottom: 1.5em; */
