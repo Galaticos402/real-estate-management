@@ -32,6 +32,9 @@ const LoginPage: React.FC = () => {
             case RoleEnum.CUSTOMER:
               navigate("/customer/project");
               break;
+            case RoleEnum.INVESTOR:
+              navigate('/investor/project');
+              break;
           }
         }
       })

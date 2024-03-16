@@ -7,6 +7,7 @@ type UseProject = {
     getAll: () => Promise<IProject[]>
     create: (model: IProject) => Promise<boolean>
     getById: (id: string) => Promise<IProject>
+    findProjectsOfAnInvestor: () => Promise<IProject[]>
 }
 
 export const useProject = () : UseProject => {
@@ -25,10 +26,15 @@ export const useProject = () : UseProject => {
         const response = await httpClient.get(`${API_PATH.PROJECT}/${id}`)
         return response.data
     }
+    const findProjectsOfAnInvestor = async () : Promise<IProject[]> => {
+        const response = await httpClient.get(API_PATH.INVESTOR.PROJECT)
+        return response.data
+    }
     return {
         create,
         getAll,
-        getById
+        getById,
+        findProjectsOfAnInvestor
     }
 }
 

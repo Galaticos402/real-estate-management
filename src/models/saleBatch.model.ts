@@ -1,3 +1,5 @@
+import { ISaleBatchDetail } from "./saleBatchDetail.model"
+
 export interface ISaleBatch {
     saleBatchId: number,
     saleBatchName: string,
@@ -8,4 +10,5 @@ export interface ISaleBatch {
     bookingFee: number,
     receiverName: string,
     premiumStartDate: string
+    saleBatchDetails: ISaleBatchDetail[]
 }

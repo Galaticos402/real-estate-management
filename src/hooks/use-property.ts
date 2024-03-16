@@ -4,6 +4,7 @@ import { API_PATH } from "../utils/path"
 
 type UseProperty = {
     getPropertiesBySaleBatchId: (saleBatchId: string) => Promise<IProperty[]>
+    getPropertiesByDivisionId: (divisionId: string) => Promise<IProperty[]>
 }
 
 export const useProperty = () : UseProperty => {
@@ -11,7 +12,12 @@ export const useProperty = () : UseProperty => {
         const response = await httpClient.get(`${API_PATH.PROPERTY}/findBySaleBatch?saleBatchId=${saleBatchId}`)
         return response.data
     }
+    const getPropertiesByDivisionId = async (divisionId: string) => {
+        const response = await httpClient.get(`${API_PATH.PROPERTY}/findByDivision?divisionId=${divisionId}`)
+        return response.data
+    }
     return {
-        getPropertiesBySaleBatchId
+        getPropertiesBySaleBatchId,
+        getPropertiesByDivisionId
     }
 }

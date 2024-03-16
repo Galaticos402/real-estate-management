@@ -16,6 +16,7 @@ import { useBooking } from "../../../hooks/use-booking";
 import { notifications } from "@mantine/notifications";
 import { AxiosError } from "axios";
 import { IHttpError } from "../../../models/error.model";
+import { numberToMoney } from "../../../utils/utils";
 interface IProps {
   isOpen: boolean;
   open: () => void;
@@ -81,7 +82,7 @@ const BookingPage: React.FC<IProps> = ({ isOpen, close, saleBatch }) => {
       </Flex>
       <Flex>
         <Text fw={700}>Phí giữ chỗ : </Text>
-        <Text pl={"5%"}>{saleBatch.bookingFee} VND</Text>
+        <Text pl={"5%"}>{numberToMoney(saleBatch.bookingFee)}</Text>
       </Flex>
       {files.length !== 0 && (
         <SimpleGrid

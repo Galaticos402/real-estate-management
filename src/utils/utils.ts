@@ -19,10 +19,11 @@ export enum SaleBatchOpeningStatus {
   CLOSED = "CLOSED",
 }
 
-export const numberToMoney = (moneyAsNumber: number) => {
+export const numberToMoney = (moneyAsNumber: number|undefined) => {
+  if(moneyAsNumber == undefined) return ''
   const formatter = new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: "USD",
+    currency: "VND",
   });
   return formatter.format(moneyAsNumber)
 };

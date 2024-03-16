@@ -92,7 +92,7 @@ const ManageBookingPage: React.FC = () => {
 
               <Group justify="space-between">
                 <Text c="dimmed">Chi phí</Text>
-                <Text>{numberToMoney(booking.saleBatch?.bookingFee as number)} VND</Text>
+                <Text>{numberToMoney(booking.saleBatch?.bookingFee as number)}</Text>
               </Group>
 
               <Group justify="space-around">

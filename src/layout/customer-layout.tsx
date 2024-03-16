@@ -37,6 +37,7 @@ const CustomerLayout: React.FC = () => {
           variant="outline"
           color="green"
           w={"100%"}
+          onClick={() => navigate("/customer/booking/")}
         >
           Thông tin đặt chỗ
         </Button>

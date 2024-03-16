@@ -10,14 +10,15 @@ import { IDivision } from "../../../models/division.model";
 import { AxiosError } from "axios";
 import { ISaleBatch } from "../../../models/saleBatch.model";
 import { useSaleBatch } from "../../../hooks/use-saleBatch";
-import { IProperty } from "../../../models/property.model";
-import { useProperty } from "../../../hooks/use-property";
 import {
   SaleBatchOpeningStatus,
   isSaleBatchOpening,
 } from "../../../utils/utils";
 import { useDisclosure } from "@mantine/hooks";
 import BookingPage from "../booking/booking";
+import ContractCreationModal from "../../../components/contract/contract-modal.component";
+import { ISaleBatchDetail } from "../../../models/saleBatchDetail.model";
+import { useSaleBatchDetail } from "../../../hooks/use-saleBatch-detail";
 
 const DivisionPage: React.FC = () => {
   const { divisionId } = useParams();
@@ -25,14 +26,18 @@ const DivisionPage: React.FC = () => {
   const [availableSaleBatches, setAvailableSaleBatches] = useState<
     ISaleBatch[]
   >([]);
-  const [properties, setProperties] = useState<IProperty[]>([]);
+  // const [properties, setProperties] = useState<IProperty[]>([]);
+  const [saleBatchDetails, setSaleBatchDetails] = useState<ISaleBatchDetail[]>(
+    []
+  );
   const [selectedSaleBatchId, setSelectedSaleBatchId] = useState<number>(-1);
-  const [selectedPropertyId, setSelectedPropertyId] = useState<number>(-1);
+  const [selectedSaleBatchDetail, setSelectedSaleBatchDetail] = useState<ISaleBatchDetail>();
   const { getById } = useDivision();
-  const { getPropertiesBySaleBatchId } = useProperty();
+  const { getSaleBatchDetailBySaleBatchId } = useSaleBatchDetail();
   const { getAvailableSaleBatchesOfADivision } = useSaleBatch();
-
   const [opened, { open, close }] = useDisclosure(false);
+
+  const [isContractOpen, contractToggler] = useDisclosure(false);
 
   const saleBatchStatus = useMemo(() => {
     const saleBatch = availableSaleBatches.filter(
@@ -44,32 +49,43 @@ const DivisionPage: React.FC = () => {
   }, [selectedSaleBatchId, availableSaleBatches]);
 
   const openingSaleBatches = useMemo(() => {
-    const today = Date.now()
-    return availableSaleBatches.filter(sb => Date.parse(sb.startDate) <= today && today <= Date.parse(sb.endDate))
-  }, [availableSaleBatches])
+    const today = Date.now();
+    return availableSaleBatches.filter(
+      (sb) =>
+        Date.parse(sb.startDate) <= today && today <= Date.parse(sb.endDate)
+    );
+  }, [availableSaleBatches]);
 
   const upcomingSaleBatches = useMemo(() => {
-    const today = Date.now()
-    return availableSaleBatches.filter(sb => Date.parse(sb.startDate) > today)
-  }, [availableSaleBatches])
+    const today = Date.now();
+    return availableSaleBatches.filter(
+      (sb) => Date.parse(sb.startDate) > today
+    );
+  }, [availableSaleBatches]);
 
   const saleBatchInfo = useMemo(() => {
     const saleBatch = availableSaleBatches.filter(
       (sb) => sb.saleBatchId === selectedSaleBatchId
     )[0];
-    return saleBatch
-  }, [selectedSaleBatchId])  
-  
-  useEffect(() => {
-    if (selectedSaleBatchId == -1) setProperties([]);
-    getPropertiesBySaleBatchId(selectedSaleBatchId.toString())
-      .then((res) => {
-        setProperties(res);
-      })
-      .catch((err: AxiosError) => {
-        console.warn(err);
-      });
+    return saleBatch;
   }, [selectedSaleBatchId]);
+
+  const fetchSaleBatchDetails = async () => {
+    if (selectedSaleBatchId == -1) setSaleBatchDetails([]);
+    else {
+      try {
+        const res = await getSaleBatchDetailBySaleBatchId(selectedSaleBatchId);
+        setSaleBatchDetails(res);
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchSaleBatchDetails();
+  }, [selectedSaleBatchId]);
+
   useEffect(() => {
     if (divisionId) {
       getById(divisionId)
@@ -91,12 +107,13 @@ const DivisionPage: React.FC = () => {
     }
   }, [divisionId]);
   const handleBooking = () => {
-    console.log(selectedPropertyId);
-    open()
+    console.log(selectedSaleBatchDetail);
+    open();
   };
   const handleBuy = () => {
-    console.log(selectedPropertyId);
-  }
+    console.log(selectedSaleBatchDetail);
+    contractToggler.open();
+  };
   return (
     <Grid>
       <Grid.Col span={5}>
@@ -117,7 +134,7 @@ const DivisionPage: React.FC = () => {
         <Text>{division?.description}</Text>
       </Grid.Col>
       <Grid.Col span={7}>
-        <Text ta={'center'} fw={700} size="xl" pt={"0.5em"} pb={"0.5em"}>
+        <Text ta={"center"} fw={700} size="xl" pt={"0.5em"} pb={"0.5em"}>
           Các đợt đang mở bán
         </Text>
         <Grid>
@@ -128,7 +145,12 @@ const DivisionPage: React.FC = () => {
                 color={
                   saleBatch.saleBatchId === selectedSaleBatchId
                     ? "yellow"
-                    : isSaleBatchOpening(saleBatch.startDate, saleBatch.endDate) == SaleBatchOpeningStatus.OPENING ? "blue" : "gray"
+                    : isSaleBatchOpening(
+                        saleBatch.startDate,
+                        saleBatch.endDate
+                      ) == SaleBatchOpeningStatus.OPENING
+                    ? "blue"
+                    : "gray"
                 }
                 size="sm"
                 radius={"xl"}
@@ -140,7 +162,7 @@ const DivisionPage: React.FC = () => {
             </Grid.Col>
           ))}
         </Grid>
-        <Text ta={'center'} fw={700} size="xl" pt={"0.5em"} pb={"0.5em"}>
+        <Text ta={"center"} fw={700} size="xl" pt={"0.5em"} pb={"0.5em"}>
           Các đợt sắp mở bán
         </Text>
         <Grid>
@@ -151,7 +173,12 @@ const DivisionPage: React.FC = () => {
                 color={
                   saleBatch.saleBatchId === selectedSaleBatchId
                     ? "yellow"
-                    : isSaleBatchOpening(saleBatch.startDate, saleBatch.endDate) == SaleBatchOpeningStatus.OPENING ? "blue" : "gray"
+                    : isSaleBatchOpening(
+                        saleBatch.startDate,
+                        saleBatch.endDate
+                      ) == SaleBatchOpeningStatus.OPENING
+                    ? "blue"
+                    : "gray"
                 }
                 size="sm"
                 radius={"xl"}
@@ -163,18 +190,18 @@ const DivisionPage: React.FC = () => {
             </Grid.Col>
           ))}
         </Grid>
-        {properties.length !== 0 && (
+        {saleBatchDetails.length !== 0 && (
           <Container mt={"1em"}>
             <Text fw={700} ta={"center"} pt={"0.5em"} pb={"1em"} size="xl">
               Thông tin căn hộ:{" "}
             </Text>
             <Grid pb={"1em"}>
-              {properties.map((property) => (
+              {saleBatchDetails.map((saleBatchDetail) => (
                 <Grid.Col span={4}>
                   <Button
                     variant="light"
                     color={
-                      property.propertyId === selectedPropertyId
+                      saleBatchDetail.saleBatchDetailId === selectedSaleBatchDetail?.saleBatchDetailId
                         ? "green"
                         : "gray"
                     }
@@ -182,14 +209,14 @@ const DivisionPage: React.FC = () => {
                     radius={"xl"}
                     maw={"100%"}
                     w={"100%"}
-                    onClick={() => setSelectedPropertyId(property.propertyId)}
+                    onClick={() => setSelectedSaleBatchDetail(saleBatchDetail)}
                   >
-                    {property.brief}
+                    {saleBatchDetail.property.brief}
                   </Button>
                 </Grid.Col>
               ))}
             </Grid>
-            {selectedPropertyId !== -1 && (
+            {selectedSaleBatchDetail !== undefined && (
               <>
                 <Carousel withIndicators height={400}>
                   <Carousel.Slide>
@@ -227,9 +254,22 @@ const DivisionPage: React.FC = () => {
           </Container>
         )}
       </Grid.Col>
-      {
-        opened && <BookingPage saleBatch={saleBatchInfo} isOpen={opened} close={close} open={open}/>
-      }
+      {opened && (
+        <BookingPage
+          saleBatch={saleBatchInfo}
+          isOpen={opened}
+          close={close}
+          open={open}
+        />
+      )}
+      {isContractOpen && (
+        <ContractCreationModal
+          saleBatchDetail={selectedSaleBatchDetail}
+          isOpen={isContractOpen}
+          close={contractToggler.close}
+          open={contractToggler.open}
+        />
+      )}
     </Grid>
   );
 };
