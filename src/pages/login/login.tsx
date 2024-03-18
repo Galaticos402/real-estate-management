@@ -74,7 +74,7 @@ const LoginPage: React.FC = () => {
                 <IconMail size="0.9em" color="#B37FEB" />
               </div>
               <Input.Label style={{ color: "#B37FEB" }}>
-                Tên đăng nhập
+                Gmail
               </Input.Label>
             </div>
             <Input
