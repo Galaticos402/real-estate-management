@@ -20,10 +20,9 @@ const InvestorProjectCard: React.FC<IProps> = ({ project }) => {
       <Group justify="space-between" mt="md" mb="xs">
         <Text fw={500}>{project.projectName}</Text>
         <Badge color="pink">{project.projectStatus}</Badge>
-        <Badge color="green">VinGroup</Badge>
       </Group>
-
-      <Text size="sm" c="dimmed" lineClamp={4}>
+      <Badge color="green" mb={'lg'}>VinGroup</Badge>
+      <Text size="md" c="dimmed" lineClamp={3} >
         {project.description}
       </Text>
 

@@ -17,3 +17,15 @@ export interface IProject {
     investor: IInvestor
     divisions: IDivision[]
 }
+
+export interface IProjectCreationModel{
+    projectName: string,
+    description: string,
+    location: string,
+    buildingContractor: string,
+    area: string,
+    scale: string,
+    juridicalStatus: string
+    introPageLink: string,
+    projectStatus: string,
+}

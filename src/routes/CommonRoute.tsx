@@ -11,6 +11,7 @@ import InvestorLayout from "../layout/investor-layout";
 import InvestorProjectPage from "../pages/investor/project/investor-project";
 import InvestorProjectDetailPage from "../pages/investor/project/detail/investor-project-detail";
 import InvestorPropertyPage from "../pages/investor/property/investor-property";
+import CreateProjectPage from "../pages/investor/project/create/create-project";
 
 
 const CommonRoute = () => {
@@ -65,6 +66,10 @@ const CommonRoute = () => {
         {
           path: '/investor/project-detail/division/:divisionId/properties',
           element: <InvestorPropertyPage/>
+        },
+        {
+          path: '/investor/project/create',
+          element: <CreateProjectPage/>
         }
       ]
     }
