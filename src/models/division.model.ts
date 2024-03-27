@@ -5,3 +5,11 @@ export interface IDivision {
     description: string,
     projectId: number
 }
+
+export interface IDivisionCreationModel{
+    divisionName: string,
+    divisionStatus: string
+    description: string,
+    agencyId?: string,
+    projectId?: string
+}

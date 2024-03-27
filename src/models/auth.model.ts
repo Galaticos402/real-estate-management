@@ -9,5 +9,6 @@ export interface ILoginResponse{
 
 export enum ROLE{
     CUSTOMER = "Customer",
-    INVESTOR = "Investor"
+    INVESTOR = "Investor",
+    AGENCY = "Agency"
 }

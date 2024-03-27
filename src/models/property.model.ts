@@ -6,3 +6,9 @@ export interface IProperty {
     description: string,
     divisionId: number
 }
+
+export interface IPropertyAssignModel{
+    propertyId: number,
+    price: number,
+    isSelected?: boolean
+}

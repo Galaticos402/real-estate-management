@@ -50,6 +50,7 @@ const CustomerLayout: React.FC = () => {
           variant="outline"
           color="green"
           w={"100%"}
+          onClick={() => navigate("/customer/contract/")}
         >
           Hợp đồng dặt cọc
         </Button>

@@ -4,7 +4,7 @@ import { IProject } from "../../../models/project.model";
 import useProject from "../../../hooks/use-project";
 import InvestorProjectCard from "./component/investor-project-card.component";
 import { IconPlus } from "@tabler/icons-react";
-import classes from "./investor-project.module.css";
+import globalClasses from "../../../global.module.css";
 import { useNavigate } from "react-router-dom";
 
 const InvestorProjectPage: React.FC = () => {
@@ -32,7 +32,7 @@ const InvestorProjectPage: React.FC = () => {
         ))}
       </Grid>
       <Tooltip label="Thêm 1 dự án mới">
-        <Button className={classes.createBtn} onClick={() => navigate("/investor/project/create")}>
+        <Button className={globalClasses.createBtn} onClick={() => navigate("/investor/project/create")}>
           <IconPlus />
         </Button>
       </Tooltip>

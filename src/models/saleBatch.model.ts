@@ -12,3 +12,14 @@ export interface ISaleBatch {
     premiumStartDate: string
     saleBatchDetails: ISaleBatchDetail[]
 }
+
+export interface ISaleBatchCreationModel {
+    saleBatchName: string,
+    startDate: Date,
+    endDate: Date,
+    bankAccount: string,
+    bankName: string,
+    bookingFee: number,
+    receiverName: string,
+    premiumStartDate: Date
+}

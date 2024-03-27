@@ -12,6 +12,9 @@ import InvestorProjectPage from "../pages/investor/project/investor-project";
 import InvestorProjectDetailPage from "../pages/investor/project/detail/investor-project-detail";
 import InvestorPropertyPage from "../pages/investor/property/investor-property";
 import CreateProjectPage from "../pages/investor/project/create/create-project";
+import AgencyLayout from "../layout/agency-layout";
+import AgencyDivisionPage from "../pages/agency/division/agency-division";
+import AgencyPropertyPage from "../pages/agency/property/agency-property";
 
 
 const CommonRoute = () => {
@@ -71,6 +74,20 @@ const CommonRoute = () => {
           path: '/investor/project/create',
           element: <CreateProjectPage/>
         }
+      ]
+    },
+    {
+      path: "",
+      element: <AgencyLayout />,
+      children: [
+        {
+          path: '/agency/division',
+          element: <AgencyDivisionPage/>
+        },
+        {
+          path: '/agency/division/:divisionId',
+          element: <AgencyPropertyPage/>
+        },
       ]
     }
   ]);

@@ -10,5 +10,6 @@ export const API_PATH = {
     PAYMENT_RECORD: '/PaymentRecord',
     INVESTOR: {
         PROJECT: '/Project/findByInvestorId'
-    }
+    },
+    USER: '/User'
 }

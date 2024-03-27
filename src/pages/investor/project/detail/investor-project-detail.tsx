@@ -3,24 +3,38 @@ import { IProject } from "../../../../models/project.model";
 import { useParams } from "react-router-dom";
 import useProject from "../../../../hooks/use-project";
 import { AxiosError } from "axios";
-import { Grid, Image, Table, Text } from "@mantine/core";
+import {
+  Button,
+  Grid,
+  Image,
+  Modal,
+  Table,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import vinhomeImg from "../../../../assets/vinhome.jpg";
 import vinhomeImg2 from "../../../../assets/vinhome-2.jpg";
 import vinhomeImg3 from "../../../../assets/vinhome-3.jpg";
 import InvestorDivisionCard from "./component/investor-division.-card.component";
+import { IconPlus } from "@tabler/icons-react";
+import globalClasses from "../../../../global.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import CreateDivisionComponent from "./create-division/create-division";
 
 const InvestorProjectDetailPage: React.FC = () => {
   const [project, setProject] = useState<IProject>();
   const { projectId } = useParams();
   const { getById } = useProject();
+  const [opened, { open, close }] = useDisclosure(false);
+  const [reload, setReload] = useState<boolean>(false)
   useEffect(() => {
     if (projectId) {
       getById(projectId)
         .then((res) => setProject(res))
         .catch((err: AxiosError) => console.log(err));
     }
-  }, [projectId]);
+  }, [projectId, reload]);
   return (
     <div>
       <Grid>
@@ -89,6 +103,25 @@ const InvestorProjectDetailPage: React.FC = () => {
           </Grid>
         </Grid.Col>
       </Grid>
+      <Tooltip label="Thêm 1 phân khu cho dự án">
+        <Button className={globalClasses.createBtn} onClick={() => open()}>
+          <IconPlus />
+        </Button>
+      </Tooltip>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={
+          <Text size="xl" fw={700} ta={"center"}>
+            Thêm phân khu mới cho dự án
+          </Text>
+        }
+      >
+        <CreateDivisionComponent projectId={projectId} reload={() => {
+           setReload(!reload)
+           close()
+        }}/>
+      </Modal>
     </div>
   );
 };
